@@ -7,14 +7,19 @@ public class Book
     public int Id { get; }
     public string Isbn { get; }
     public string Author { get; }
-    public string? Title { get; }
+    public string Title { get; }
+    public string Description { get; }
+    public decimal Price { get; }
 
-    public Book (int id,string icbn,string author, string title)
+
+    public Book (int id,string icbn,string author, string title, string description, decimal price)
     {
         Title= title;
         Id = id;
         Isbn= icbn;
         Author= author;
+        Description = description;
+        Price = price;
     }
     internal static bool IsIsbn(string? data)
     {
