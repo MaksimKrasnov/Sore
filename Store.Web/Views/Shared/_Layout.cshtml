@@ -12,9 +12,9 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-light bg-white">
             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Поиск:</a>
-            <form class="form-inline my-2 my-lg-2" action="@Url.Action("Index", "Search")" method="get">
+            <form class="form-inline my-2 my-lg-0" action="@Url.Action("Index", "Search")" method="get" >
                 <div class="input-group">
-                    <input class="form-control mr-sm-2" type="search" name="query" placeholder="Автор или название" />
+                    <input class="form-control mr-sm-2" type="search" name="query" placeholder="Автор или название" style="border-radius:5px" />
                     <div class="input-group-append" style="margin-left: 20px">
                         <button class="btn btn-primary my-2 my-sm-0" type="submit">Искать</button>
                     </div>
