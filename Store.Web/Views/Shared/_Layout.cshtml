@@ -20,6 +20,23 @@
                     </div>
                 </div>
             </form>
+            <div class="navbar-text ms-auto">
+                @{
+                    Cart cart;
+                    if(!Context.Session.TryGetCart(out cart))
+                    {
+                        cart = new Cart();
+                    }
+                    if (cart.Items.Count == 0)
+                    {
+                        @:Корзина пуста
+                    }
+                    else
+                    {
+                        @: Товаров @cart.Items.Count на сумму @cart.Amount
+                    }
+                }
+             </div>
         </nav>
     </header>
     <div class="container">
