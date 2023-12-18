@@ -22,6 +22,11 @@ namespace Store.Web
                 session.Set(key, stream.ToArray());
             }
         }
+        public static void RemoveCart(this ISession session)
+        {
+            session.Remove(key);
+        }
+
         public static bool TryGetCart(this ISession session, out Cart value)
         {
             if (session.TryGetValue(key, out byte[] buffer))

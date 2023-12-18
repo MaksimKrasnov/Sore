@@ -1,5 +1,10 @@
+
 using Store;
+using Store.Contractors;
 using Store.Memory;
+using Store.Messages;
+using Store.Web.Contractors;
+using Store.YandexKassa;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +20,12 @@ builder.Services.AddSession(options =>
 builder.Services.AddSingleton<IBookRepository, BookRepository>();
 builder.Services.AddSingleton<BookService>();
 builder.Services.AddSingleton<IOrderRepository, OrderRepository>();
+builder.Services.AddSingleton<INotificationService, DebugNotificationService>();
+builder.Services.AddSingleton<IDeliveryService, PostamateDeliveryService>();
+builder.Services.AddSingleton<IPaymentService, CashPaymentService>();
+builder.Services.AddSingleton<IPaymentService, YandexKassaPaymentService>();
+builder.Services.AddSingleton<IWebContractorService, YandexKassaPaymentService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -34,8 +45,15 @@ app.UseAuthorization();
 
 app.UseSession();
 
+
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}"
+
+    );
+app.MapAreaControllerRoute(
+    name: "yandex.kassa",
+    areaName: "YandexKassa",
+    pattern: "YandexKassa/{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
