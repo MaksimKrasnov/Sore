@@ -1,9 +1,32 @@
-﻿@{
+﻿
+@using Store.YandexKassa.Areas.YandexKassa.Controllers
+@using Store.YandexKassa.Areas.YandexKassa.Models
+@model ExampleModel
+
+@{
     ViewData["Title"] = "Яндекс.Касса";
 }
 
 <h1>Яндекс.Касса</h1>
 
-<p>
-    <a href="/YandexKassa/Home/Callback">Оплатить</a>.
-</p>
+    <form method="POST" action="https://yoomoney.ru/quickpay/confirm">
+        <input type="hidden" name="receiver" value="4100118487269601" />
+        <input type="hidden" name="label" value="$order_id"/>
+        <input type="hidden" name="quickpay-form" value="button"/>
+        <input type="hidden" name="sum" value="2" data-type="number"/>
+        <input type="hidden" name="successURL" value="https://localhost:7255/" />
+
+        <label><input type="radio" name="paymentType" value="PC"/>ЮMoney</label>
+        <label><input type="radio" name="paymentType" value="AC"/>Банковской картой</label>
+    <input type="submit" value="Перевести"/>
+
+    <form action="@Url.Action(nameof(HomeController.Callback), "Home", new { area = "YandexKassa" })" method="post">
+        <input type="hidden" name="orderId" value="@Model.OrderId" />
+        <input type="hidden" name="returnUri" value="@Model.ReturnUri" />
+        <button type="submit" class="btn btn-success">Оплатить</button>
+    </form>
+</form>
+
+
+
+        

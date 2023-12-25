@@ -21,7 +21,7 @@ public class Book
         Description = description;
         Price = price;
     }
-    internal static bool IsIsbn(string? data)
+    public static bool IsIsbn(string? data)
     {
         if (data is null)
         {

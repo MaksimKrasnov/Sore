@@ -8,10 +8,10 @@ namespace Store.Contractors
 {
     public interface IPaymentService
     {
-         string UniqueCode { get; }
+         string Name { get; }
          string Title { get; }
-         Form CreateForm(Order order);
-         Form MoveNextForm(int orderId, int step, IReadOnlyDictionary<string, string> data);
+         Form FirstForm(Order order);
+         Form NextForm( int step, IReadOnlyDictionary<string, string> data);
          OrderPayment GetPayment(Form form);
 
     }

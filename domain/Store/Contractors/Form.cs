@@ -4,31 +4,72 @@ namespace Store.Contractors
 {
     public class Form
     {
-        public string UniqueCode { get; }
-        public int OrderId { get; }
+        public string ServiceName { get; }
         public int Step { get; }
         public bool isFinal { get; }
-        public IReadOnlyList<Field> Fields { get; }
-        public Form(string uniqueCode, int orderId, int step, bool isFinal, IEnumerable<Field> fields)
+        private readonly Dictionary<string, string> parameters;
+        public IReadOnlyDictionary<string, string> Parameters => parameters;
+
+        private readonly List<Field> fields;
+        public IReadOnlyList<Field> Fields => fields;
+
+        public static Form CreateFirst(string serviceName)
         {
-            if (string.IsNullOrWhiteSpace(uniqueCode))
+            return new Form(serviceName, 1, false, null);
+        }
+
+        public static Form CreateNext(string serviceName, int step, IReadOnlyDictionary<string, string> parameters)
+        {
+            if (parameters == null)
+                throw new ArgumentNullException(nameof(parameters));
+
+            return new Form(serviceName, step, isFinal: false, parameters);
+        }
+
+        public static Form CreateLast(string serviceName, int step, IReadOnlyDictionary<string, string> parameters)
+        {
+            if (parameters == null)
+                throw new ArgumentNullException(nameof(parameters));
+
+            return new Form(serviceName, step, isFinal: true, parameters);
+        }
+        private Form(string serviceName,
+                     int step,
+                     bool isFinal,
+                     IReadOnlyDictionary<string, string> parameters)
+        {
+            if (string.IsNullOrWhiteSpace(serviceName))
             {
-                throw new ArgumentException(nameof(uniqueCode));
+                throw new ArgumentException(nameof(serviceName));
             }
             if (step < 1)
             {
                 throw new ArgumentOutOfRangeException(nameof(step));
             }
-            if (fields == null)
-            {
-                throw new ArgumentNullException(nameof(fields));
-            }
+            
 
-            UniqueCode = uniqueCode;
-            OrderId = orderId;
+            ServiceName = serviceName;
             Step = step;
             this.isFinal = isFinal;
-            Fields = fields.ToArray();
+            if (parameters == null)
+                this.parameters = new Dictionary<string, string>();
+            else
+                this.parameters = parameters.ToDictionary(p => p.Key, p => p.Value);
+
+            fields = new List<Field>();
+        }
+        public Form AddParameter(string name, string value)
+        {
+            parameters.Add(name, value);
+
+            return this;
+        }
+
+        public Form AddField(Field field)
+        {
+            fields.Add(field);
+
+            return this;
         }
     }
 }
